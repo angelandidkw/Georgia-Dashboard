@@ -10,7 +10,10 @@ function getDiscordAuthURL() {
     const redirectUri = config.discord.redirectUri;
     logger.debug('Using Discord redirect URI:', { redirectUri });
     
-    return `https://discord.com/api/oauth2/authorize?client_id=${config.discord.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify`;
+    // Add state parameter for security
+    const state = Math.random().toString(36).substring(7);
+    
+    return `https://discord.com/api/oauth2/authorize?client_id=${config.discord.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify&state=${state}`;
 }
 
 // Initialize auth routes with rate limiting
@@ -21,37 +24,73 @@ router.get('/discord', (req, res) => {
     logger.info('Starting Discord auth flow', { 
         ip: req.ip,
         redirectUri: config.discord.redirectUri,
-        env: config.server.env
+        env: config.server.env,
+        sessionId: req.session.id
     });
     
-    // Store the current URL in session for redirect after auth
-    req.session.returnTo = req.query.returnTo || '/';
-    
-    res.redirect(getDiscordAuthURL());
+    // Ensure session is saved before redirect
+    req.session.save((err) => {
+        if (err) {
+            logger.error('Session save error:', { error: err });
+        }
+        
+        // Store the current URL in session for redirect after auth
+        req.session.returnTo = req.query.returnTo || '/';
+        req.session.authState = Math.random().toString(36).substring(7);
+        
+        // Force session save again with new data
+        req.session.save((err) => {
+            if (err) {
+                logger.error('Session save error after state:', { error: err });
+            }
+            
+            // Redirect to Discord
+            res.redirect(getDiscordAuthURL());
+        });
+    });
 });
 
 // Handle Discord OAuth callback
 router.get('/discord/callback', async (req, res) => {
-    const { code, error } = req.query;
+    const { code, error, error_description, state } = req.query;
     
     // Log the full query parameters for debugging
     logger.debug('Discord callback received', { 
         query: req.query,
-        ip: req.ip
+        ip: req.ip,
+        sessionId: req.session.id
     });
     
     if (error) {
         logger.error('Discord auth failed: Error from Discord', { 
             error,
-            ip: req.ip
+            error_description,
+            ip: req.ip,
+            sessionId: req.session.id
         });
-        return res.redirect('/auth-error.html?error=discord_error');
+
+        // Handle specific Discord OAuth errors
+        switch(error) {
+            case 'access_denied':
+                return res.redirect('/auth-error.html?error=access_denied');
+            case 'invalid_scope':
+                return res.redirect('/auth-error.html?error=invalid_scope');
+            case 'invalid_request':
+                return res.redirect('/auth-error.html?error=invalid_request');
+            case 'server_error':
+                return res.redirect('/auth-error.html?error=server_error');
+            case 'temporarily_unavailable':
+                return res.redirect('/auth-error.html?error=temporarily_unavailable');
+            default:
+                return res.redirect('/auth-error.html?error=discord_error');
+        }
     }
     
     if (!code) {
         logger.warn('Discord auth failed: Missing code', { 
             query: req.query,
-            ip: req.ip
+            ip: req.ip,
+            sessionId: req.session.id
         });
         return res.redirect('/auth-error.html?error=nocode');
     }
@@ -108,16 +147,24 @@ router.get('/discord/callback', async (req, res) => {
             expiresAt: Date.now() + tokenData.expires_in * 1000
         };
         
-        logger.info('User authenticated successfully', { 
-            userId: userData.id,
-            username: userData.username,
-            ip: req.ip
+        // Ensure session is saved before redirect
+        req.session.save((err) => {
+            if (err) {
+                logger.error('Session save error before redirect:', { error: err });
+            }
+            
+            logger.info('User authenticated successfully', { 
+                userId: userData.id,
+                username: userData.username,
+                ip: req.ip,
+                sessionId: req.session.id
+            });
+            
+            // Redirect to the stored return URL or welcome page
+            const returnTo = req.session.returnTo || '/welcome';
+            delete req.session.returnTo; // Clean up
+            res.redirect(returnTo);
         });
-        
-        // Redirect to the stored return URL or welcome page
-        const returnTo = req.session.returnTo || '/welcome';
-        delete req.session.returnTo; // Clean up
-        res.redirect(returnTo);
     } catch (error) {
         logger.error('Discord auth failed: Unexpected error', { 
             error: error.message,
@@ -138,8 +185,12 @@ router.get('/logout', (req, res) => {
         });
     }
     
-    req.session.destroy();
-    res.redirect('/');
+    req.session.destroy((err) => {
+        if (err) {
+            logger.error('Session destroy error:', { error: err });
+        }
+        res.redirect('/');
+    });
 });
 
 module.exports = router; 

@@ -13,7 +13,10 @@ module.exports = {
     discord: {
         clientId: process.env.DISCORD_CLIENT_ID || '1355983636620513461',
         clientSecret: process.env.DISCORD_CLIENT_SECRET || 'n3m0rk_qGoXMqEkcH-XqWzHO3vJKwg9m',
-        redirectUri: process.env.DISCORD_REDIRECT_URI || `http://localhost:${process.env.PORT || 3000}/auth/discord/callback`,
+        redirectUri: process.env.DISCORD_REDIRECT_URI || 
+            (process.env.NODE_ENV === 'production' 
+                ? 'https://gssrp.xyz/auth/discord/callback' 
+                : `http://localhost:${process.env.PORT || 3000}/auth/discord/callback`),
         apiUrl: 'https://discord.com/api/v10'
     },
     
@@ -28,7 +31,7 @@ module.exports = {
     // Cookie configuration
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        secure: process.env.NODE_ENV === 'production',
+        secure: false, // Don't force secure cookies, Nginx handles HTTPS
         sameSite: 'lax'
     },
     

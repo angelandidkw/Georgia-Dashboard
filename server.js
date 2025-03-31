@@ -23,12 +23,26 @@ const imageRoutes = require('./src/routes/images');
 const app = express();
 const PORT = config.server.port;
 
+// Trust proxy (needed when behind Nginx)
+app.set('trust proxy', 1);
+
 // Apply security headers with custom configuration
 securityHeaders(app);
 
+// Debug middleware to identify redirect loops
+app.use((req, res, next) => {
+    const originalRedirect = res.redirect;
+    res.redirect = function(url) {
+        console.log(`REDIRECT: ${req.method} ${req.originalUrl} -> ${url}`);
+        return originalRedirect.call(this, url);
+    };
+    console.log(`REQUEST: ${req.method} ${req.originalUrl} (Referrer: ${req.headers.referer || 'none'})`);
+    next();
+});
+
 // CORS configuration
 app.use(cors({
-    origin: config.server.env === 'production' ? 'https://georgiastateroleplay.com' : true,
+    origin: config.server.env === 'production' ? 'https://gssrp.xyz' : true,
     credentials: true
 }));
 
@@ -43,8 +57,9 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: config.cookie.maxAge,
-        secure: config.cookie.secure,
-        sameSite: config.cookie.sameSite
+        secure: config.server.env === 'production',
+        sameSite: 'lax',
+        proxy: true
     }
 }));
 
@@ -52,19 +67,26 @@ app.use(session({
 app.use(express.static(path.join(__dirname, config.paths.public)));
 
 // Maintenance mode
-app.use(maintenanceMode);
+// Comment out temporarily to isolate redirect issues
+// app.use(maintenanceMode);
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 app.use('/images', imageRoutes);
 
+// Add a simple test route
+app.get('/test', (req, res) => {
+    res.send('Server is working!');
+});
+
 // Welcome route
 app.get('/welcome', (req, res) => {
-    if (!req.session.user) {
-        logger.warn('Unauthorized access attempt to welcome page', { ip: req.ip });
-        return res.redirect('/');
-    }
+    // Temporarily disable session check to test for redirects
+    // if (!req.session.user) {
+    //     logger.warn('Unauthorized access attempt to welcome page', { ip: req.ip });
+    //     return res.redirect('/');
+    // }
     res.sendFile(path.join(__dirname, config.paths.public, 'welcome.html'));
 });
 

@@ -5,4 +5,4 @@ Disallow: /logout
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://georgiastateroleplay.com/sitemap.xml 
+Sitemap: https://gssrp.xyz/sitemap.xml 

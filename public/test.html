@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .info {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Server Test Page</h1>
+    <p>If you can see this page, the server is responding correctly!</p>
+    
+    <div class="info">
+        <h2>Browser Information</h2>
+        <p id="browser-info">Loading...</p>
+        
+        <h2>Request Information</h2>
+        <p id="request-info">Loading...</p>
+    </div>
+
+    <script>
+        // Display browser information
+        document.getElementById('browser-info').textContent = 
+            `User Agent: ${navigator.userAgent}
+             Protocol: ${window.location.protocol}
+             Host: ${window.location.host}`;
+            
+        // Display request information
+        const requestInfo = document.getElementById('request-info');
+        requestInfo.textContent = 
+            `Page URL: ${window.location.href}
+             Loaded at: ${new Date().toISOString()}`;
+    </script>
+</body>
+</html> 

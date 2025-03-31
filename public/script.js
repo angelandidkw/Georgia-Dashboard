@@ -1,3 +1,7 @@
+// Add a special comment marker to verify this file loads correctly
+// DEBUG: JavaScript file loaded successfully
+console.log('Script loaded successfully at: ' + new Date().toISOString());
+
 // Georgia State Roleplay - Coming Soon
 console.log('Georgia State Roleplay - Coming Soon!');
 

@@ -1,3 +1,6 @@
+/* Add a special comment marker to verify this file loads correctly */
+/* DEBUG: CSS file loaded successfully */
+
 * {
     margin: 0;
     padding: 0;

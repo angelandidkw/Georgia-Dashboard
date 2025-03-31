@@ -8,11 +8,11 @@ const securityHeaders = (app) => {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "*.amazonaws.com"],
           styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com"],
-          imgSrc: ["'self'", "data:", "cdn.discordapp.com", "*.discordapp.net"],
+          imgSrc: ["'self'", "data:", "cdn.discordapp.com", "*.discordapp.net", "*.amazonaws.com"],
           fontSrc: ["'self'", "data:", "fonts.gstatic.com", "cdnjs.cloudflare.com"],
-          connectSrc: ["'self'"],
+          connectSrc: ["'self'", "*.amazonaws.com", "sfd8q2ch3k.execute-api.us-east-2.amazonaws.com"],
         },
       },
       // Disable COEP to allow loading resources from different origins
@@ -20,7 +20,9 @@ const securityHeaders = (app) => {
       // Configure CORS policy
       crossOriginResourcePolicy: { policy: "cross-origin" },
       // Allow iframes from same origin
-      frameguard: { action: 'sameorigin' }
+      frameguard: { action: 'sameorigin' },
+      // Disable HSTS to let the hosting provider handle it
+      hsts: false
     })
   );
 

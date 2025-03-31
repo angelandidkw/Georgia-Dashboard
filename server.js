@@ -33,34 +33,27 @@ app.set('trust proxy', 1);
 // Apply security headers with custom configuration
 securityHeaders(app);
 
-// HTTPS redirect middleware - prevent redirect loops
+// Remove the redirect middleware entirely - let your hosting provider handle HTTPS redirects
+// Instead, just log the protocol info for debugging
 app.use((req, res, next) => {
-    // Skip redirect if already on HTTPS or in development environment
-    if (config.server.env !== 'production' || req.secure || req.headers['x-forwarded-proto'] === 'https') {
-        return next();
-    }
-    
-    // Redirect to HTTPS with 301 status code to avoid loops
-    // Keep the original URL path when redirecting
-    const redirectUrl = `https://${req.headers.host}${req.url}`;
-    console.log(`HTTPS Redirect: ${req.method} ${req.originalUrl} -> ${redirectUrl}`);
-    return res.redirect(301, redirectUrl);
+    logger.debug(`Request received: ${req.method} ${req.originalUrl}`);
+    logger.debug(`Protocol: ${req.protocol}, Secure: ${req.secure}, X-Forwarded-Proto: ${req.headers['x-forwarded-proto'] || 'none'}`);
+    next();
 });
 
-// Debug middleware to identify redirect loops
+// Debug middleware to identify redirects
 app.use((req, res, next) => {
     const originalRedirect = res.redirect;
     res.redirect = function(url) {
-        console.log(`REDIRECT: ${req.method} ${req.originalUrl} -> ${url}`);
+        logger.debug(`REDIRECT: ${req.method} ${req.originalUrl} -> ${url}`);
         return originalRedirect.call(this, url);
     };
-    console.log(`REQUEST: ${req.method} ${req.originalUrl} (Protocol: ${req.protocol}) (Secure: ${req.secure}) (X-Forwarded-Proto: ${req.headers['x-forwarded-proto'] || 'none'}) (Referrer: ${req.headers.referer || 'none'})`);
     next();
 });
 
 // CORS configuration
 app.use(cors({
-    origin: config.server.env === 'production' ? 'https://gssrp.xyz' : true,
+    origin: config.server.env === 'production' ? ['https://gssrp.xyz', 'http://gssrp.xyz'] : true,
     credentials: true
 }));
 
@@ -75,14 +68,27 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: config.cookie.maxAge,
-        secure: config.server.env === 'production',
+        // Don't force secure cookies to avoid issues
+        secure: false,
         sameSite: 'lax',
         proxy: true
     }
 }));
 
-// Static files
-app.use(express.static(path.join(__dirname, config.paths.public)));
+// Static files - with caching headers for better performance
+app.use(express.static(path.join(__dirname, config.paths.public), {
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, path) => {
+        if (path.endsWith('.html')) {
+            // Don't cache HTML files
+            res.setHeader('Cache-Control', 'no-cache');
+        } else if (path.match(/\.(css|js|jpg|png|gif|svg|ico)$/)) {
+            // Cache static assets for 1 day
+            res.setHeader('Cache-Control', 'public, max-age=86400');
+        }
+    }
+}));
 
 // Maintenance mode
 // Comment out temporarily to isolate redirect issues
@@ -134,7 +140,7 @@ try {
 if (config.server.env === 'production' && sslOptions) {
     // Create both HTTP and HTTPS servers
     http.createServer(app).listen(PORT, () => {
-        logger.info(`HTTP server running on port ${PORT} (redirecting to HTTPS)`);
+        logger.info(`HTTP server running on port ${PORT}`);
     });
     
     https.createServer(sslOptions, app).listen(SSL_PORT, () => {

@@ -5,6 +5,7 @@ module.exports = {
     // Server configuration
     server: {
         port: process.env.PORT || 3000,
+        sslPort: process.env.SSL_PORT || 443,
         env: process.env.NODE_ENV || 'development',
         sessionSecret: process.env.SESSION_SECRET || 'georgia_state_roleplay_secret'
     },
@@ -31,7 +32,7 @@ module.exports = {
     // Cookie configuration
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        secure: false, // Don't force secure cookies, Nginx handles HTTPS
+        secure: process.env.NODE_ENV === 'production', // Force secure cookies in production
         sameSite: 'lax'
     },
     

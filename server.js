@@ -4,6 +4,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 
 // Load config and utilities
 const config = require('./src/config/config');
@@ -22,12 +25,27 @@ const imageRoutes = require('./src/routes/images');
 // Initialize Express
 const app = express();
 const PORT = config.server.port;
+const SSL_PORT = config.server.sslPort || 443;
 
 // Trust proxy (needed when behind Nginx)
 app.set('trust proxy', 1);
 
 // Apply security headers with custom configuration
 securityHeaders(app);
+
+// HTTPS redirect middleware - prevent redirect loops
+app.use((req, res, next) => {
+    // Skip redirect if already on HTTPS or in development environment
+    if (config.server.env !== 'production' || req.secure || req.headers['x-forwarded-proto'] === 'https') {
+        return next();
+    }
+    
+    // Redirect to HTTPS with 301 status code to avoid loops
+    // Keep the original URL path when redirecting
+    const redirectUrl = `https://${req.headers.host}${req.url}`;
+    console.log(`HTTPS Redirect: ${req.method} ${req.originalUrl} -> ${redirectUrl}`);
+    return res.redirect(301, redirectUrl);
+});
 
 // Debug middleware to identify redirect loops
 app.use((req, res, next) => {
@@ -36,7 +54,7 @@ app.use((req, res, next) => {
         console.log(`REDIRECT: ${req.method} ${req.originalUrl} -> ${url}`);
         return originalRedirect.call(this, url);
     };
-    console.log(`REQUEST: ${req.method} ${req.originalUrl} (Referrer: ${req.headers.referer || 'none'})`);
+    console.log(`REQUEST: ${req.method} ${req.originalUrl} (Protocol: ${req.protocol}) (Secure: ${req.secure}) (X-Forwarded-Proto: ${req.headers['x-forwarded-proto'] || 'none'}) (Referrer: ${req.headers.referer || 'none'})`);
     next();
 });
 
@@ -99,8 +117,34 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-    logger.info(`Server running in ${config.server.env} mode on port ${PORT}`);
-    logger.info(`Visit http://localhost:${PORT} to view the site`);
-}); 
+// SSL options
+let sslOptions;
+try {
+    sslOptions = {
+        key: fs.readFileSync(path.join(__dirname, 'ssl/private.key')),
+        cert: fs.readFileSync(path.join(__dirname, 'ssl/certificate.pem'))
+    };
+    logger.info('SSL certificates loaded successfully');
+} catch (err) {
+    logger.error(`Failed to load SSL certificates: ${err.message}`);
+    sslOptions = null;
+}
+
+// Start servers
+if (config.server.env === 'production' && sslOptions) {
+    // Create both HTTP and HTTPS servers
+    http.createServer(app).listen(PORT, () => {
+        logger.info(`HTTP server running on port ${PORT} (redirecting to HTTPS)`);
+    });
+    
+    https.createServer(sslOptions, app).listen(SSL_PORT, () => {
+        logger.info(`HTTPS server running in ${config.server.env} mode on port ${SSL_PORT}`);
+        logger.info(`Visit https://gssrp.xyz to view the site`);
+    });
+} else {
+    // Development mode or no SSL certificates - just use HTTP
+    app.listen(PORT, () => {
+        logger.info(`Server running in ${config.server.env} mode on port ${PORT}`);
+        logger.info(`Visit http://localhost:${PORT} to view the site`);
+    });
+} 

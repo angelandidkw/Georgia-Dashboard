@@ -11,7 +11,7 @@ const securityHeaders = (app) => {
           scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"],
           styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com"],
           imgSrc: ["'self'", "data:", "cdn.discordapp.com", "*.discordapp.net"],
-          fontSrc: ["'self'", "fonts.gstatic.com", "cdnjs.cloudflare.com"],
+          fontSrc: ["'self'", "data:", "fonts.gstatic.com", "cdnjs.cloudflare.com"],
           connectSrc: ["'self'"],
         },
       },

@@ -13,7 +13,8 @@ function getDiscordAuthURL() {
     // Add state parameter for security
     const state = Math.random().toString(36).substring(7);
     
-    return `https://discord.com/api/oauth2/authorize?client_id=${config.discord.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify&state=${state}`;
+    // Add prompt=consent to force the authorization screen
+    return `https://discord.com/api/oauth2/authorize?client_id=${config.discord.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify&state=${state}&prompt=consent`;
 }
 
 // Initialize auth routes with rate limiting
@@ -25,7 +26,8 @@ router.get('/discord', (req, res) => {
         ip: req.ip,
         redirectUri: config.discord.redirectUri,
         env: config.server.env,
-        sessionId: req.session.id
+        sessionId: req.session.id,
+        headers: req.headers
     });
     
     // Ensure session is saved before redirect
@@ -54,11 +56,13 @@ router.get('/discord', (req, res) => {
 router.get('/discord/callback', async (req, res) => {
     const { code, error, error_description, state } = req.query;
     
-    // Log the full query parameters for debugging
+    // Log the full query parameters and request details for debugging
     logger.debug('Discord callback received', { 
         query: req.query,
         ip: req.ip,
-        sessionId: req.session.id
+        sessionId: req.session.id,
+        headers: req.headers,
+        url: req.originalUrl
     });
     
     if (error) {
@@ -90,8 +94,20 @@ router.get('/discord/callback', async (req, res) => {
         logger.warn('Discord auth failed: Missing code', { 
             query: req.query,
             ip: req.ip,
-            sessionId: req.session.id
+            sessionId: req.session.id,
+            headers: req.headers,
+            url: req.originalUrl
         });
+        
+        // Check if this is a direct callback without authorization
+        if (!req.query.state) {
+            logger.info('Direct callback detected - redirecting to auth start', {
+                ip: req.ip,
+                sessionId: req.session.id
+            });
+            return res.redirect('/auth/discord');
+        }
+        
         return res.redirect('/auth-error.html?error=nocode');
     }
 
@@ -116,7 +132,8 @@ router.get('/discord/callback', async (req, res) => {
         if (!tokenResponse.ok) {
             logger.error('Discord auth failed: Token error', { 
                 error: tokenData,
-                ip: req.ip
+                ip: req.ip,
+                sessionId: req.session.id
             });
             return res.redirect('/auth-error.html?error=token');
         }
@@ -133,7 +150,8 @@ router.get('/discord/callback', async (req, res) => {
         if (!userResponse.ok) {
             logger.error('Discord auth failed: User data error', { 
                 error: userData,
-                ip: req.ip
+                ip: req.ip,
+                sessionId: req.session.id
             });
             return res.redirect('/auth-error.html?error=user');
         }
@@ -169,7 +187,8 @@ router.get('/discord/callback', async (req, res) => {
         logger.error('Discord auth failed: Unexpected error', { 
             error: error.message,
             stack: error.stack,
-            ip: req.ip
+            ip: req.ip,
+            sessionId: req.session.id
         });
         res.redirect('/auth-error.html?error=general');
     }
@@ -181,7 +200,8 @@ router.get('/logout', (req, res) => {
         logger.info('User logged out', { 
             userId: req.session.user.id,
             username: req.session.user.username,
-            ip: req.ip
+            ip: req.ip,
+            sessionId: req.session.id
         });
     }
     

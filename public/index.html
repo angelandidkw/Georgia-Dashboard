@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - Georgia State Roleplay</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="logo">
+                <img src="/images/logo.png" alt="Georgia State Roleplay Logo" class="site-logo" onError="this.onerror=null; this.src='/images/default-avatar.png';">
+            </div>
+            <div class="coming-soon">
+                <h2>Coming Soon</h2>
+                <p>We're working hard to bring you an amazing roleplay experience.</p>
+            </div>
+            <a href="/auth/discord" class="auth-button">
+                <i class="fab fa-discord"></i> Authorize with Discord
+            </a>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="cookies.js"></script>
+    <script>
+        // Handle image loading errors
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to load the specific problematic image
+            // If it fails, provide an alternative
+            const logoImg = document.querySelector('.site-logo');
+            
+            // Add a cleanup function to handle CORS errors
+            window.addEventListener('error', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    console.log('Image error detected, using fallback');
+                    e.target.src = '/images/default-avatar.png';
+                }
+            }, true);
+        });
+    </script>
+</body>
+</html> 

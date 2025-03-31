@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /logout
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://georgiastateroleplay.com/sitemap.xml 

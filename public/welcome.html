@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Georgia State Roleplay</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a1128, #1c2541, #000000);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .welcome-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-logo {
+            max-width: 120px;
+            height: auto;
+        }
+        
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .user-profile-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .user-profile-nav:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+        
+        .avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #3498db;
+        }
+        
+        .username-small {
+            font-weight: 600;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .logout-button {
+            background-color: rgba(139, 0, 0, 0.8);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .logout-button:hover {
+            background-color: #8B0000;
+            transform: translateY(-2px);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            flex: 1;
+        }
+        
+        .profile-sidebar {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: fit-content;
+        }
+        
+        .avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #3498db;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .username-large {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-id {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-info {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: #3498db;
+        }
+        
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .welcome-card {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .welcome-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.3), transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-card {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .info-card-icon {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .info-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        
+        .info-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, transparent);
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .status-coming-soon {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-sidebar {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .user-nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <header class="header">
+            <div class="logo-container">
+                <img src="/images/logo.png" alt="Georgia State Roleplay Logo" class="site-logo">
+            </div>
+            <div class="user-nav">
+                <div class="user-profile-nav">
+                    <img id="avatar-nav" class="avatar-small" src="/images/default-avatar.png" alt="User avatar">
+                    <span id="username-nav" class="username-small">Username</span>
+                </div>
+                <a href="/logout" class="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <aside class="profile-sidebar">
+                <img id="avatar-large" class="avatar-large" src="/images/default-avatar.png" alt="User avatar">
+                <h2 id="username-large" class="username-large">Username</h2>
+                <div id="user-id" class="user-id">Discord ID: --------</div>
+                
+                <div class="user-info">
+                    <div class="info-item">
+                        <span class="info-label">Joined Discord</span>
+                        <span id="joined-date" class="info-value">--/--/----</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Status</span>
+                        <span class="info-value">Member</span>
+                    </div>
+                </div>
+            </aside>
+            
+            <div class="dashboard-content">
+                <div class="welcome-card">
+                    <h2>Welcome to Georgia State Roleplay</h2>
+                    <p>Thank you for authenticating with Discord. We're currently working on developing an immersive roleplay experience for our community. Stay tuned for updates and announcements as we progress toward launch.</p>
+                    <div class="status-badge status-coming-soon">Coming Soon</div>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Join Our Community</h3>
+                        <p>Connect with other players in our Discord server. Discuss ideas, find teammates, and stay updated.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Game Features</h3>
+                        <p>Explore our realistic world with custom vehicles, jobs, properties, and unique experiences.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3>Latest News</h3>
+                        <p>Check back for development updates, community events, and important announcements.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>&copy; 2025 Georgia State Roleplay. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Format date function
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        // Fetch user data from the server
+        fetch('/api/user')
+            .then(response => response.json())
+            .then(data => {
+                if (data.loggedIn && data.user) {
+                    const user = data.user;
+                    
+                    // Update usernames
+                    const usernameElements = [
+                        document.getElementById('username-nav'),
+                        document.getElementById('username-large')
+                    ];
+                    
+                    usernameElements.forEach(el => {
+                        if (el) el.textContent = user.username;
+                    });
+                    
+                    // Update avatars if available
+                    let avatarUrl = '/images/default-avatar.png';
+                    if (user.avatar) {
+                        avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+                    }
+                    
+                    const avatarElements = [
+                        document.getElementById('avatar-nav'),
+                        document.getElementById('avatar-large')
+                    ];
+                    
+                    avatarElements.forEach(el => {
+                        if (el) el.src = avatarUrl;
+                    });
+                    
+                    // Update user ID
+                    const userIdElement = document.getElementById('user-id');
+                    if (userIdElement && user.id) {
+                        userIdElement.textContent = `Discord ID: ${user.id}`;
+                    }
+                    
+                    // Update joined date (placeholder)
+                    const joinedDateElement = document.getElementById('joined-date');
+                    if (joinedDateElement) {
+                        // Using current date as placeholder
+                        joinedDateElement.textContent = formatDate(new Date());
+                    }
+                } else {
+                    // Redirect to home if not logged in
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                window.location.href = '/';
+            });
+    </script>
+    <script src="script.js"></script>
+    <script src="cookies.js"></script>
+</body>
+</html> 

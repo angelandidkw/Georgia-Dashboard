@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - Georgia State Roleplay</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <style>
+        .maintenance-icon {
+            font-size: 4rem;
+            color: #f39c12;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .maintenance-message {
+            margin: 30px 0;
+        }
+        
+        .maintenance-message p {
+            margin-bottom: 20px;
+        }
+        
+        .time-estimate {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="logo">
+                <img src="/images/logo.png" alt="Georgia State Roleplay Logo" class="site-logo">
+            </div>
+            
+            <div class="maintenance-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            
+            <div class="maintenance-message">
+                <h2>Scheduled Maintenance</h2>
+                <p>We're currently performing scheduled maintenance on our servers to improve your experience.</p>
+                <div class="time-estimate">
+                    <p>Expected completion: <span id="completion-time">Soon</span></p>
+                </div>
+                <p>Thank you for your patience!</p>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Optional: Update with actual completion time from server
+        // For now, it will just show a placeholder
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const completionTime = urlParams.get('completion');
+            
+            if (completionTime) {
+                document.getElementById('completion-time').textContent = completionTime;
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script src="cookies.js"></script>
+</body>
+</html> 

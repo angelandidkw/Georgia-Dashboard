@@ -1,0 +1,60 @@
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:19"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:19"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:40"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:40"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:45"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:45"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/logo.png","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:49","url":"/images/logo.png"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:15:50","url":"/images/favicon.ico"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:16:14"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:16:14"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:16:34","url":"/images/favicon.ico"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:17:00"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:17:00"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:17:03","url":"/images/favicon.ico"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:17:56","url":"/images/favicon.ico"}
+{"ip":"::1","level":"info","message":"Starting Discord auth flow","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:03"}
+{"ip":"::1","level":"info","message":"User authenticated successfully","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:07","userId":"1337581518364868719","username":"codegio._."}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:07","userId":"1337581518364868719"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:08","url":"/images/favicon.ico"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:41"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:41"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:42"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:42"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:43"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:43"}
+{"ip":"::1","level":"warn","message":"Unauthorized access attempt to welcome page","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:44"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:44","url":"/images/favicon.ico"}
+{"ip":"::1","level":"info","message":"Starting Discord auth flow","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:47"}
+{"ip":"::1","level":"info","message":"User authenticated successfully","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:51","userId":"1337581518364868719","username":"codegio._."}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:51","userId":"1337581518364868719"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:52","url":"/images/favicon.ico"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:57"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:57"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:59"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:18:59"}
+{"ip":"::1","level":"warn","message":"Unauthorized access attempt to welcome page","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:06"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:07","url":"/images/favicon.ico"}
+{"ip":"::1","level":"info","message":"Starting Discord auth flow","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:07"}
+{"ip":"::1","level":"info","message":"User authenticated successfully","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:12","userId":"1337581518364868719","username":"codegio._."}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:12","userId":"1337581518364868719"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /images/favicon.ico","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:12","url":"/images/favicon.ico"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:43"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:43"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:45"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:45"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:49"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:49"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:59"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:19:59"}
+{"level":"info","message":"Server running in development mode on port 3000","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:20:02"}
+{"level":"info","message":"Visit http://localhost:3000 to view the site","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:20:02"}
+{"ip":"::1","level":"warn","message":"Unauthorized access attempt to welcome page","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:22:07"}
+{"ip":"::1","level":"info","message":"Starting Discord auth flow","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:22:08"}
+{"ip":"::1","level":"info","message":"User authenticated successfully","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:22:12","userId":"1337581518364868719","username":"codegio._."}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:22:13","userId":"1337581518364868719"}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:23:06","userId":"1337581518364868719"}
+{"ip":"::1","level":"warn","message":"404 - Not Found - /s","method":"GET","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:23:52","url":"/s"}
+{"ip":"::1","level":"info","message":"Starting Discord auth flow","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:25:07"}
+{"ip":"::1","level":"info","message":"User authenticated successfully","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:25:11","userId":"1337581518364868719","username":"codegio._."}
+{"level":"debug","message":"User data requested","service":"georgia-state-roleplay","timestamp":"2025-03-30 19:25:11","userId":"1337581518364868719"}

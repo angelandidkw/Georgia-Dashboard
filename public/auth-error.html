@@ -122,6 +122,24 @@
                     case 'user':
                         errorText.textContent = "Could not retrieve user information from Discord. Please try again or contact support if the issue persists.";
                         break;
+                    case 'access_denied':
+                        errorText.textContent = "You denied access to your Discord account. Please authorize the application to continue.";
+                        break;
+                    case 'invalid_scope':
+                        errorText.textContent = "The requested Discord permissions are invalid. Please contact support.";
+                        break;
+                    case 'invalid_request':
+                        errorText.textContent = "The authentication request was invalid. Please try again.";
+                        break;
+                    case 'server_error':
+                        errorText.textContent = "Discord's servers are experiencing issues. Please try again later.";
+                        break;
+                    case 'temporarily_unavailable':
+                        errorText.textContent = "Discord's authentication service is temporarily unavailable. Please try again later.";
+                        break;
+                    case 'discord_error':
+                        errorText.textContent = "An error occurred while connecting to Discord. Please try again.";
+                        break;
                     default:
                         errorText.textContent = "An unknown error occurred: " + error;
                 }

@@ -47,6 +47,22 @@
         .retry-button {
             background-color: #2ecc71;
         }
+
+        .auth-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .auth-button:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -72,7 +88,7 @@
                 <a href="/" class="auth-button home-button">
                     <i class="fas fa-home"></i> Return to Home
                 </a>
-                <a href="/auth/discord" class="auth-button retry-button">
+                <a href="/auth/discord" class="auth-button retry-button" id="retryButton">
                     <i class="fas fa-redo"></i> Try Again
                 </a>
             </div>
@@ -88,6 +104,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const error = urlParams.get('error');
             const errorText = document.getElementById('error-text');
+            const retryButton = document.getElementById('retryButton');
+            
+            // Clear any existing error parameters to prevent loops
+            if (window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+            }
             
             if (error) {
                 switch(error) {
@@ -104,6 +126,14 @@
                         errorText.textContent = "An unknown error occurred: " + error;
                 }
             }
+
+            // Add click handler to retry button to prevent rapid clicking
+            retryButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.style.pointerEvents = 'none';
+                this.style.opacity = '0.7';
+                window.location.href = '/auth/discord';
+            });
         });
     </script>
     <script src="/js/script.js"></script>

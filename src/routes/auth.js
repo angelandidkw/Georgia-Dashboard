@@ -25,7 +25,7 @@ router.get('/discord/callback', async (req, res) => {
     
     if (!code) {
         logger.warn('Discord auth failed: Missing code', { ip: req.ip });
-        return res.redirect('/?error=nocode');
+        return res.redirect('/auth-error.html?error=nocode');
     }
 
     try {
@@ -51,7 +51,7 @@ router.get('/discord/callback', async (req, res) => {
                 error: tokenData,
                 ip: req.ip
             });
-            return res.redirect('/?error=token');
+            return res.redirect('/auth-error.html?error=token');
         }
 
         // Get user data
@@ -68,7 +68,7 @@ router.get('/discord/callback', async (req, res) => {
                 error: userData,
                 ip: req.ip
             });
-            return res.redirect('/?error=user');
+            return res.redirect('/auth-error.html?error=user');
         }
 
         // Store user and token in session
@@ -94,7 +94,7 @@ router.get('/discord/callback', async (req, res) => {
             stack: error.stack,
             ip: req.ip
         });
-        res.redirect('/?error=general');
+        res.redirect('/auth-error.html?error=general');
     }
 });
 

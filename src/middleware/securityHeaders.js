@@ -8,7 +8,9 @@ const securityHeaders = (app) => {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "*.amazonaws.com"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "*.amazonaws.com"],
+          scriptSrcAttr: ["'unsafe-inline'"],
+          scriptSrcElem: ["'self'", "'unsafe-inline'"],
           styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com"],
           imgSrc: ["'self'", "data:", "cdn.discordapp.com", "*.discordapp.net", "*.amazonaws.com"],
           fontSrc: ["'self'", "data:", "fonts.gstatic.com", "cdnjs.cloudflare.com"],

@@ -1,4 +1,5 @@
 const helmet = require('helmet');
+const { logger } = require('../utils/logger');
 
 // Security headers middleware
 const securityHeaders = (app) => {
@@ -40,6 +41,35 @@ const securityHeaders = (app) => {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
     }
+
+    // Set stricter Content Security Policy for admin routes
+    if (req.path.startsWith('/admin')) {
+      // Set strict CSP for admin routes
+      res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://cdn.discordapp.com; font-src 'self' data: https:; frame-ancestors 'none';"
+      );
+      
+      // Prevent admin page from being embedded in iframes (clickjacking protection)
+      res.setHeader('X-Frame-Options', 'DENY');
+      
+      // Prevent browsers from performing MIME sniffing
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      
+      // Enable XSS protection
+      res.setHeader('X-XSS-Protection', '1; mode=block');
+      
+      // Force HTTPS
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+      
+      // Prevent caching of admin pages
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      
+      logger.debug('Applied strict security headers for admin route', { path: req.path });
+    }
+
     next();
   });
 };

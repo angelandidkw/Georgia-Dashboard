@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const logger = require('../utils/logger');
+const { logger } = require('../utils/logger');
 
 // Middleware to enable maintenance mode
 function maintenanceMode(req, res, next) {

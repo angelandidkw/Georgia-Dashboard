@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
 const config = require('../config/config');
-const logger = require('../utils/logger');
-const { authLimiter } = require('../middleware/rateLimiter');
+const { logger } = require('../utils/logger');
+const { authRateLimiter } = require('../middleware/rateLimiter');
 
 // Discord authorization URL
 function getDiscordAuthURL() {
@@ -18,7 +18,7 @@ function getDiscordAuthURL() {
 }
 
 // Initialize auth routes with rate limiting
-router.use(authLimiter);
+router.use(authRateLimiter);
 
 // Start Discord OAuth flow
 router.get('/discord', (req, res) => {
@@ -112,6 +112,11 @@ router.get('/discord/callback', async (req, res) => {
     }
 
     try {
+        logger.debug('Attempting to exchange code for token', {
+            redirectUri: config.discord.redirectUri,
+            apiUrl: config.discord.apiUrl
+        });
+        
         // Exchange code for token
         const tokenResponse = await fetch(`${config.discord.apiUrl}/oauth2/token`, {
             method: 'POST',
@@ -127,17 +132,21 @@ router.get('/discord/callback', async (req, res) => {
             }),
         });
 
-        const tokenData = await tokenResponse.json();
-        
+        // Check if the response is OK before trying to parse JSON
         if (!tokenResponse.ok) {
+            const errorText = await tokenResponse.text();
             logger.error('Discord auth failed: Token error', { 
-                error: tokenData,
+                status: tokenResponse.status,
+                statusText: tokenResponse.statusText,
+                errorText,
                 ip: req.ip,
                 sessionId: req.session.id
             });
             return res.redirect('/auth-error.html?error=token');
         }
 
+        const tokenData = await tokenResponse.json();
+        
         // Get user data
         const userResponse = await fetch(`${config.discord.apiUrl}/users/@me`, {
             headers: {
@@ -145,17 +154,21 @@ router.get('/discord/callback', async (req, res) => {
             },
         });
 
-        const userData = await userResponse.json();
-        
+        // Check if the user response is OK before trying to parse JSON
         if (!userResponse.ok) {
+            const errorText = await userResponse.text();
             logger.error('Discord auth failed: User data error', { 
-                error: userData,
+                status: userResponse.status,
+                statusText: userResponse.statusText,
+                errorText,
                 ip: req.ip,
                 sessionId: req.session.id
             });
             return res.redirect('/auth-error.html?error=user');
         }
 
+        const userData = await userResponse.json();
+        
         // Store user and token in session
         req.session.user = userData;
         req.session.discord = {
@@ -164,11 +177,13 @@ router.get('/discord/callback', async (req, res) => {
             tokenType: tokenData.token_type,
             expiresAt: Date.now() + tokenData.expires_in * 1000
         };
+        req.session.loggedInAt = new Date();
         
         // Ensure session is saved before redirect
         req.session.save((err) => {
             if (err) {
                 logger.error('Session save error before redirect:', { error: err });
+                return res.redirect('/auth-error.html?error=session');
             }
             
             logger.info('User authenticated successfully', { 
@@ -177,19 +192,40 @@ router.get('/discord/callback', async (req, res) => {
                 ip: req.ip,
                 sessionId: req.session.id
             });
-            
-            // Redirect to the stored return URL or welcome page
-            const returnTo = req.session.returnTo || '/welcome';
-            delete req.session.returnTo; // Clean up
-            res.redirect(returnTo);
+
+            // Force session save and wait for it to complete
+            req.session.save((err) => {
+                if (err) {
+                    logger.error('Final session save error:', { error: err });
+                    return res.redirect('/auth-error.html?error=session');
+                }
+                
+                // Redirect to welcome page with cache control headers
+                res.set({
+                    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                });
+                res.redirect('/welcome');
+            });
         });
     } catch (error) {
         logger.error('Discord auth failed: Unexpected error', { 
             error: error.message,
             stack: error.stack,
+            code: error.code,
+            type: error.constructor.name,
             ip: req.ip,
-            sessionId: req.session.id
+            sessionId: req.session.id,
+            clientId: config.discord.clientId,
+            redirectUri: config.discord.redirectUri
         });
+        
+        // Try to determine if it's a network error or configuration issue
+        if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+            return res.redirect('/auth-error.html?error=network');
+        }
+        
         res.redirect('/auth-error.html?error=general');
     }
 });

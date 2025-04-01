@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Georgia State Roleplay</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' https://cdn.discordapp.com; font-src 'self' data: https:;">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252525;
+            --bg-accent: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #707070;
+            --border-color: #333333;
+            --accent-color: #3d84e6;
+            --accent-hover: #5a9bf0;
+            --success: #43a047;
+            --danger: #e53935;
+            --warning: #ff9800;
+            --info: #2196f3;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 1.25rem 2rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .badge-info {
+            background-color: var(--info);
+            color: white;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 0.75rem;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(61, 132, 230, 0.2);
+        }
+
+        .button {
+            padding: 0.85rem 1.25rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .button:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--bg-accent);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.25rem;
+        }
+
+        th, td {
+            padding: 1.1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tr:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .status-online {
+            background-color: var(--success);
+            box-shadow: 0 0 5px var(--success);
+        }
+
+        .status-bot {
+            background-color: var(--info);
+            box-shadow: 0 0 5px var(--info);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            border: 2px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2.5rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .error {
+            color: var(--danger);
+            padding: 1.25rem;
+            background-color: rgba(229, 57, 53, 0.1);
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(229, 57, 53, 0.2);
+        }
+
+        .date-column {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .ip-address {
+            font-family: monospace;
+            padding: 0.3rem 0.5rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 0.85rem 0.5rem;
+            }
+            
+            .container {
+                padding: 0 0.75rem;
+            }
+            
+            .card {
+                padding: 1.25rem;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Georgia State Roleplay - Admin Panel</h1>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Active User Sessions</h2>
+                <div>
+                    <button class="button" id="refreshBtn">Refresh Data</button>
+                </div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by username, ID, or IP...">
+                <button class="button" id="searchBtn">Search</button>
+            </div>
+            
+            <div id="errorBox" class="error" style="display: none;"></div>
+            
+            <div id="tableContainer">
+                <div class="loading" id="loadingIndicator">Loading session data...</div>
+                <table id="sessionsTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Discord ID</th>
+                            <th>Bot</th>
+                            <th>IP Address</th>
+                            <th>Last Active</th>
+                            <th>Login Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sessionsTableBody">
+                        <!-- Sessions will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sessionsTable = document.getElementById('sessionsTable');
+            const sessionsTableBody = document.getElementById('sessionsTableBody');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorBox = document.getElementById('errorBox');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            
+            // Load sessions data
+            const loadSessions = async () => {
+                try {
+                    // Show loading indicator
+                    loadingIndicator.style.display = 'block';
+                    sessionsTable.style.display = 'none';
+                    errorBox.style.display = 'none';
+                    
+                    // Fetch sessions data
+                    const response = await fetch('/admin/api/sessions');
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        throw new Error(data.error || 'Unknown error fetching sessions');
+                    }
+                    
+                    // Clear table body
+                    sessionsTableBody.innerHTML = '';
+                    
+                    // Add sessions to table
+                    if (data.sessions.length === 0) {
+                        sessionsTableBody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i>No active sessions found</i>
+                                    <p>No users are currently logged in or active.</p>
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        data.sessions.forEach(session => {
+                            const row = document.createElement('tr');
+                            
+                            // Format dates
+                            const lastActive = new Date(session.lastActive);
+                            const loggedIn = new Date(session.loggedInAt);
+                            
+                            row.innerHTML = `
+                                <td>
+                                    <div class="user-info">
+                                        <span class="status-indicator ${session.isBot ? 'status-bot' : 'status-online'}"></span>
+                                        ${session.username}#${session.discriminator}
+                                    </div>
+                                </td>
+                                <td>${session.userId}</td>
+                                <td>${session.isBot ? '<span class="badge badge-info">Yes</span>' : '<span class="badge badge-success">No</span>'}</td>
+                                <td><span class="ip-address">${session.ip}</span></td>
+                                <td class="date-column">${formatDate(lastActive)}</td>
+                                <td class="date-column">${formatDate(loggedIn)}</td>
+                            `;
+                            
+                            sessionsTableBody.appendChild(row);
+                        });
+                    }
+                    
+                    // Hide loading indicator and show table
+                    loadingIndicator.style.display = 'none';
+                    sessionsTable.style.display = 'table';
+                } catch (error) {
+                    console.error('Error loading sessions:', error);
+                    errorBox.textContent = `Error: ${error.message}`;
+                    errorBox.style.display = 'block';
+                    loadingIndicator.style.display = 'none';
+                }
+            };
+            
+            // Format date to readable string
+            const formatDate = (date) => {
+                return new Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                }).format(date);
+            };
+            
+            // Search functionality
+            const filterSessions = () => {
+                const filter = searchInput.value.toLowerCase();
+                const rows = sessionsTableBody.getElementsByTagName('tr');
+                
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    const text = row.textContent.toLowerCase();
+                    
+                    if (text.includes(filter)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            };
+            
+            // Event listeners
+            refreshBtn.addEventListener('click', loadSessions);
+            searchBtn.addEventListener('click', filterSessions);
+            searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    filterSessions();
+                }
+            });
+            
+            // Load sessions on page load
+            loadSessions();
+            
+            // Refresh data every 60 seconds
+            setInterval(loadSessions, 60000);
+        });
+    </script>
+</body>
+</html> 

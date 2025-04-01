@@ -10,17 +10,23 @@ const https = require('https');
 
 // Load config and utilities
 const config = require('./src/config/config');
-const logger = require('./src/utils/logger');
+const { logger } = require('./src/utils/logger');
 
 // Load middleware
 const { notFound, errorHandler } = require('./src/middleware/errorHandler');
 const maintenanceMode = require('./src/middleware/maintenance');
 const securityHeaders = require('./src/middleware/securityHeaders');
+const adminSecurity = require('./src/middleware/adminSecurity');
 
 // Load routes
 const authRoutes = require('./src/routes/auth');
 const apiRoutes = require('./src/routes/api');
 const imageRoutes = require('./src/routes/images');
+const dashboardRoutes = require('./src/routes/dashboard');
+const admin = require('./src/routes/admin');
+
+// Load bot
+const bot = require('./src/bot');
 
 // Initialize Express
 const app = express();
@@ -75,6 +81,18 @@ app.use(session({
     }
 }));
 
+// Global IP blocking middleware - applies to all routes
+app.use((req, res, next) => {
+    if (admin.isIPBlocked(req.ip)) {
+        logger.warn('Blocked IP attempted to access the site', { ip: req.ip, path: req.path });
+        return res.status(403).send('Your access to this site has been blocked.');
+    }
+    next();
+});
+
+// Admin security middleware - must be applied after session initialization and IP blocking
+app.use(adminSecurity);
+
 // Static files - with caching headers for better performance
 app.use(express.static(path.join(__dirname, config.paths.public), {
     etag: true,
@@ -90,6 +108,21 @@ app.use(express.static(path.join(__dirname, config.paths.public), {
     }
 }));
 
+// Remove direct access to admin static files - redundant with adminSecurity middleware
+// app.use('/admin', (req, res, next) => {
+//     // Only check GET requests for static files
+//     if (req.method === 'GET' && req.path !== '/' && req.path !== '/login') {
+//         if (!req.session.adminToken) {
+//             logger.warn('Unauthorized attempt to access admin static content', { 
+//                 ip: req.ip, 
+//                 path: req.path 
+//             });
+//             return res.status(403).send('Access forbidden');
+//         }
+//     }
+//     next();
+// });
+
 // Maintenance mode
 // Comment out temporarily to isolate redirect issues
 // app.use(maintenanceMode);
@@ -98,6 +131,10 @@ app.use(express.static(path.join(__dirname, config.paths.public), {
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 app.use('/images', imageRoutes);
+app.use('/dashboard', dashboardRoutes);
+
+// Admin routes should be loaded last for better security 
+app.use('/admin', admin.router);
 
 // Add a simple test route
 app.get('/test', (req, res) => {
@@ -146,11 +183,17 @@ if (config.server.env === 'production' && sslOptions) {
     https.createServer(sslOptions, app).listen(SSL_PORT, () => {
         logger.info(`HTTPS server running in ${config.server.env} mode on port ${SSL_PORT}`);
         logger.info(`Visit https://gssrp.xyz to view the site`);
+        
+        // Start bot after server is running
+        bot.start();
     });
 } else {
     // Development mode or no SSL certificates - just use HTTP
     app.listen(PORT, () => {
         logger.info(`Server running in ${config.server.env} mode on port ${PORT}`);
         logger.info(`Visit http://localhost:${PORT} to view the site`);
+        
+        // Start bot after server is running
+        bot.start();
     });
 } 

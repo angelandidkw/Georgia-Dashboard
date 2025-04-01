@@ -9,45 +9,36 @@ if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
 }
 
-// Define logger format
+// Define log format
 const logFormat = winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    winston.format.errors({ stack: true }),
-    winston.format.splat(),
-    winston.format.json()
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(({ timestamp, level, message }) => {
+        return `${timestamp} [${level}]: ${message}`;
+    })
 );
 
-// Create logger
+// Create logger instance
 const logger = winston.createLogger({
     level: config.server.env === 'production' ? 'info' : 'debug',
     format: logFormat,
-    defaultMeta: { service: 'georgia-state-roleplay' },
     transports: [
         // Console transport
-        new winston.transports.Console({
-            format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.printf(
-                    ({ level, message, timestamp, ...meta }) => {
-                        return `${timestamp} ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
-                    }
-                )
-            ),
-        }),
+        new winston.transports.Console(),
         // File transport for errors
-        new winston.transports.File({ 
-            filename: path.join(logsDir, 'error.log'),
+        new winston.transports.File({
+            filename: path.join(config.paths.logs, 'error.log'),
             level: 'error',
             maxsize: 5242880, // 5MB
-            maxFiles: 5,
+            maxFiles: 5
         }),
         // File transport for all logs
-        new winston.transports.File({ 
-            filename: path.join(logsDir, 'combined.log'),
+        new winston.transports.File({
+            filename: path.join(config.paths.logs, 'combined.log'),
             maxsize: 5242880, // 5MB
-            maxFiles: 5,
-        }),
-    ],
+            maxFiles: 5
+        })
+    ]
 });
 
 // HTTP request logger
@@ -57,4 +48,17 @@ logger.stream = {
     }
 };
 
-module.exports = logger; 
+// Add request logging middleware
+const requestLogger = (req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        logger.info(`${req.method} ${req.originalUrl} ${res.statusCode} ${duration}ms`);
+    });
+    next();
+};
+
+module.exports = {
+    logger,
+    requestLogger
+}; 

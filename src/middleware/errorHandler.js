@@ -1,4 +1,4 @@
-const logger = require('../utils/logger');
+const { logger } = require('../utils/logger');
 
 // Not Found middleware - 404 errors
 function notFound(req, res, next) {

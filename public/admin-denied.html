@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            background-color: #252525;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+        }
+        
+        h1 {
+            color: #e53935;
+            margin-top: 0;
+            font-size: 2.5rem;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .warning-icon {
+            font-size: 5rem;
+            color: #e53935;
+            margin-bottom: 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: #3d84e6;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-link:hover {
+            background-color: #2c6fc9;
+            transform: translateY(-2px);
+        }
+        
+        .login-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #3d84e6;
+            text-decoration: none;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="warning-icon">⚠️</div>
+        <h1>Access Denied</h1>
+        <p>You do not have permission to access the admin panel.</p>
+        <p>This area is restricted to authorized administrators only. Please log in with an administrator account to continue.</p>
+        <a href="/auth/discord" class="back-link">Authenticate with Discord</a>
+        <br>
+        <a href="/" class="login-link">Return to Home</a>
+    </div>
+</body>
+</html> 

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { apiLimiter } = require('../middleware/rateLimiter');
-const logger = require('../utils/logger');
+const { apiRateLimiter } = require('../middleware/rateLimiter');
+const { logger } = require('../utils/logger');
 
 // Apply rate limiting to all API routes
-router.use(apiLimiter);
+router.use(apiRateLimiter);
 
 // Authentication check middleware
 function isAuthenticated(req, res, next) {

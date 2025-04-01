@@ -1,43 +1,54 @@
 const rateLimit = require('express-rate-limit');
 const config = require('../config/config');
-const logger = require('../utils/logger');
+const logger = require('../utils/logger').logger;
 
-// Create a standard rate limiter for API routes
-const apiLimiter = rateLimit({
-    windowMs: config.rateLimit.windowMs,
-    max: config.rateLimit.max,
-    standardHeaders: config.rateLimit.standardHeaders,
-    legacyHeaders: config.rateLimit.legacyHeaders,
-    message: {
-        status: 429,
-        message: 'Too many requests, please try again later.'
-    },
-    handler: (req, res, next, options) => {
-        logger.warn(`Rate limit exceeded for ${req.ip} on ${req.originalUrl}`);
-        res.status(options.statusCode).json(options.message);
+// Create rate limiter middleware
+const rateLimiter = rateLimit({
+    windowMs: config.security.rateLimit.windowMs,
+    max: config.security.rateLimit.max,
+    standardHeaders: config.security.rateLimit.standardHeaders,
+    legacyHeaders: config.security.rateLimit.legacyHeaders,
+    handler: (req, res) => {
+        logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
+        res.status(429).json({
+            error: 'Too many requests, please try again later.',
+            retryAfter: Math.ceil(config.security.rateLimit.windowMs / 1000)
+        });
     }
 });
 
-// Create a stricter rate limiter for authentication routes
-const authLimiter = rateLimit({
+// Create a more strict rate limiter for authentication endpoints
+const authRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // Limit each IP to 10 login attempts per window
+    max: 5, // 5 attempts per window
     standardHeaders: true,
     legacyHeaders: false,
-    message: {
-        status: 429,
-        message: 'Too many login attempts, please try again later.'
-    },
-    handler: (req, res, next, options) => {
-        logger.warn(`Auth rate limit exceeded for ${req.ip} on ${req.originalUrl}`, {
-            ip: req.ip,
-            userAgent: req.headers['user-agent']
+    handler: (req, res) => {
+        logger.warn(`Auth rate limit exceeded for IP: ${req.ip}`);
+        res.status(429).json({
+            error: 'Too many login attempts, please try again later.',
+            retryAfter: 900 // 15 minutes in seconds
         });
-        res.status(options.statusCode).json(options.message);
+    }
+});
+
+// Create a rate limiter for API endpoints
+const apiRateLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 60, // 60 requests per minute
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => {
+        logger.warn(`API rate limit exceeded for IP: ${req.ip}`);
+        res.status(429).json({
+            error: 'Too many API requests, please try again later.',
+            retryAfter: 60 // 1 minute in seconds
+        });
     }
 });
 
 module.exports = {
-    apiLimiter,
-    authLimiter
+    rateLimiter,
+    authRateLimiter,
+    apiRateLimiter
 }; 

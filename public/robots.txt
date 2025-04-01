@@ -3,6 +3,7 @@ Allow: /
 Disallow: /auth/
 Disallow: /logout
 Disallow: /api/
+Disallow: /admin/
 
 # Sitemap
 Sitemap: https://gssrp.xyz/sitemap.xml 

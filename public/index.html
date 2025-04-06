@@ -1,49 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon - Georgia State Roleplay</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap">
-    <link rel="stylesheet" href="./cs/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="/images/logo.png" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coming Soon - Georgia State Roleplay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="./images/logo.png" type="image/x-icon">
+  <style>
+    /* Reset and global styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #000000, #0d47a1); /* Black to dark blue gradient */
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    /* Container styling with a subtle dark glassmorphism effect */
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+    /* Logo styling */
+    .logo {
+      max-width: 150px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    /* Headings and paragraph */
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    /* Auth button styling */
+    .auth-button {
+      display: inline-block;
+      background: #0d47a1; /* Dark blue */
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    .auth-button:hover {
+      background: #1565c0; /* Slightly lighter blue on hover */
+    }
+    /* Social icons */
+    .social-icons {
+      margin-top: 30px;
+    }
+    .social-icon {
+      color: #fff;
+      margin: 0 10px;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+    .social-icon:hover {
+      color: #90caf9; /* Light blue on hover */
+    }
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <div class="logo">
-                <img src="./images/logo.png" alt="Georgia State Roleplay Logo" class="site-logo" onError="this.onerror=null; this.src='/images/default-avatar.png';">
-            </div>
-            <div class="coming-soon">
-                <h2>Coming Soon</h2>
-                <p>We're working hard to bring you an amazing roleplay experience.</p>
-            </div>
-            <a href="/auth/discord" class="auth-button">
-                <i class="fab fa-discord"></i> Authorize with Discord
-            </a>
-            <div class="social-icons">
-                <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
-            </div>
-        </div>
+  <div class="container">
+    <img src="./images/logo.png" alt="Georgia State Roleplay Logo" class="logo" onerror="this.onerror=null; this.src='/images/default-avatar.png';">
+    <h1>Coming Soon</h1>
+    <p>We're working hard to bring you an amazing roleplay experience.</p>
+    <a href="/auth/discord?returnTo=/welcome" class="auth-button">
+      <i class="fab fa-discord"></i> Authorize with Discord
+    </a>
+    <div class="social-icons">
+      <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+      <!-- Additional social icons can be added here -->
     </div>
-    <script src="./js/script.js"></script>
-    <script src="./js/cookies.js"></script>
-    <script>
-        // Handle image loading errors
-        document.addEventListener('DOMContentLoaded', function() {
-            // Try to load the specific problematic image
-            // If it fails, provide an alternative
-            const logoImg = document.querySelector('.site-logo');
-            
-            // Add a cleanup function to handle CORS errors
-            window.addEventListener('error', function(e) {
-                if (e.target.tagName === 'IMG') {
-                    console.log('Image error detected, using fallback');
-                    e.target.src = '/images/default-avatar.png';
-                }
-            }, true);
-        });
-    </script>
+  </div>
+  <script>
+    // Handle image loading errors gracefully
+    document.addEventListener('DOMContentLoaded', function() {
+      const logo = document.querySelector('.logo');
+      logo.addEventListener('error', function() {
+        this.src = '/images/default-avatar.png';
+      });
+    });
+  </script>
 </body>
-</html> 
+</html>

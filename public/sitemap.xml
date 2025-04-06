@@ -2,32 +2,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://gssrp.xyz/</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2025-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://gssrp.xyz/welcome.html</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2025-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gssrp.xyz/coming-soon.html</loc>
+    <lastmod>2025-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gssrp.xyz/admin-denied.html</loc>
+    <lastmod>2025-04-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://gssrp.xyz/auth-error.html</loc>
+    <lastmod>2025-03-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://gssrp.xyz/404.html</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2025-03-31</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://gssrp.xyz/500.html</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2025-03-31</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://gssrp.xyz/maintenance.html</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2025-03-31</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://gssrp.xyz/test.html</loc>
+    <lastmod>2025-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset> 

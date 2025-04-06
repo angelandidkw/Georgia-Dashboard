@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Georgia State Roleplay</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://cdn.discordapp.com; connect-src 'self';">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/news.css">
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="/images/logo.png" alt="Logo">
+                <h1>Georgia State Roleplay</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/welcome" class="nav-link">Dashboard</a>
+                <a href="/panels/community" class="nav-link active">Community</a>
+                <a href="#" class="nav-link">Support</a>
+            </div>
+            <div class="user-section">
+                <div class="user-profile">
+                    <img src="/images/default-avatar.png" alt="User Avatar" class="user-avatar">
+                    <span class="username">User</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="community-container">
+            <aside class="community-sidebar">
+                <nav class="community-nav">
+                    <h3>Community Navigation</h3>
+                    <ul>
+                        <li><a href="./news.html"><i class="fas fa-newspaper"></i> News & Updates</a></li>
+                        <li><a href="./events.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                        <li><a href="./discussions.html"><i class="fas fa-comments"></i> Discussions</a></li>
+                        <li><a href="./help.html" class="active"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <div class="community-content">
+                <section class="news-header">
+                    <h2>Help Center</h2>
+                    <p>Find answers to common questions and learn how to get the most out of Georgia State Roleplay.</p>
+                </section>
+
+                <section class="news-filters">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All Help Topics</button>
+                        <button class="filter-btn" data-filter="faq">FAQs</button>
+                        <button class="filter-btn" data-filter="guide">Guides</button>
+                        <button class="filter-btn" data-filter="rules">Rules</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search help topics..." id="newsSearch">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </section>
+
+                <section class="news-grid">
+                    <!-- Featured Help Article -->
+                    <article class="news-card featured">
+                        <div class="card-image">
+                            <img src="/images/news/featured.jpg" alt="Featured Help" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Featured</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 6, 2024</span>
+                                <span class="category">Guide</span>
+                            </div>
+                            <h3>Getting Started with Georgia State Roleplay</h3>
+                            <p>Everything you need to know to join our community and start your roleplay journey.</p>
+                            <a href="#" class="read-more">Read Guide <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Regular Help Cards -->
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news1.jpg" alt="Help 1" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">FAQ</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 5, 2024</span>
+                                <span class="category">FAQ</span>
+                            </div>
+                            <h3>Frequently Asked Questions</h3>
+                            <p>Answers to the most common questions about our community, gameplay, and policies.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news2.jpg" alt="Help 2" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Rules</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 4, 2024</span>
+                                <span class="category">Rules</span>
+                            </div>
+                            <h3>Community Rules & Guidelines</h3>
+                            <p>Complete list of rules and expectations for all members of Georgia State Roleplay.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news3.jpg" alt="Help 3" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Guide</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 3, 2024</span>
+                                <span class="category">Guide</span>
+                            </div>
+                            <h3>Roleplay Best Practices</h3>
+                            <p>Tips and guidance on creating immersive and enjoyable roleplay experiences.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="pagination">
+                    <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">&copy; 2025 Georgia State Roleplay. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/community.js"></script>
+    <script src="/js/news.js"></script>
+</body>
+</html> 

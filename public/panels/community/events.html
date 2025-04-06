@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Events - Georgia State Roleplay</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://cdn.discordapp.com; connect-src 'self';">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/news.css">
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="/images/logo.png" alt="Logo">
+                <h1>Georgia State Roleplay</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/welcome" class="nav-link">Dashboard</a>
+                <a href="/panels/community" class="nav-link active">Community</a>
+                <a href="#" class="nav-link">Support</a>
+            </div>
+            <div class="user-section">
+                <div class="user-profile">
+                    <img src="/images/default-avatar.png" alt="User Avatar" class="user-avatar">
+                    <span class="username">User</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="community-container">
+            <aside class="community-sidebar">
+                <nav class="community-nav">
+                    <h3>Community Navigation</h3>
+                    <ul>
+                        <li><a href="./news.html"><i class="fas fa-newspaper"></i> News & Updates</a></li>
+                        <li><a href="./events.html" class="active"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                        <li><a href="./discussions.html"><i class="fas fa-comments"></i> Discussions</a></li>
+                        <li><a href="./help.html"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <div class="community-content">
+                <section class="news-header">
+                    <h2>Community Events</h2>
+                    <p>Join us for exciting roleplay events and activities across Georgia State.</p>
+                </section>
+
+                <section class="news-filters">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All Events</button>
+                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-btn" data-filter="recurring">Recurring</button>
+                        <button class="filter-btn" data-filter="special">Special</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search events..." id="newsSearch">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </section>
+
+                <section class="news-grid">
+                    <!-- Featured Event -->
+                    <article class="news-card featured">
+                        <div class="card-image">
+                            <img src="/images/news/featured.jpg" alt="Featured Event" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Featured</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 10, 2024</span>
+                                <span class="category">Special</span>
+                            </div>
+                            <h3>Spring Community Day</h3>
+                            <p>Join us for a full day of special roleplay scenarios, games, and prizes for all participants.</p>
+                            <a href="#" class="read-more">Details <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Regular Event Cards -->
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news1.jpg" alt="Event 1" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Upcoming</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 15, 2024</span>
+                                <span class="category">Upcoming</span>
+                            </div>
+                            <h3>Downtown Patrol Event</h3>
+                            <p>Join our scheduled patrol focusing on roleplay scenarios in the downtown area.</p>
+                            <a href="#" class="read-more">Details <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news2.jpg" alt="Event 2" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Recurring</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">Every Saturday</span>
+                                <span class="category">Recurring</span>
+                            </div>
+                            <h3>Weekend Ride-Along</h3>
+                            <p>Weekly opportunity for civilians to ride along with officers for authentic roleplay experience.</p>
+                            <a href="#" class="read-more">Details <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="news-card">
+                        <div class="card-image">
+                            <img src="/images/news/news3.jpg" alt="Event 3" onerror="this.style.backgroundColor='#3498db'; this.style.height='100%'; this.style.width='100%'; this.alt='Image not available';">
+                            <div class="card-category">Special</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span class="date">April 30, 2024</span>
+                                <span class="category">Special</span>
+                            </div>
+                            <h3>Major Crime Scenario</h3>
+                            <p>Participate in our most elaborate scenario yet involving multiple departments and roles.</p>
+                            <a href="#" class="read-more">Details <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="pagination">
+                    <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">&copy; 2025 Georgia State Roleplay. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/community.js"></script>
+    <script src="/js/news.js"></script>
+</body>
+</html> 

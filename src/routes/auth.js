@@ -37,7 +37,7 @@ router.get('/discord', (req, res) => {
         }
         
         // Store the current URL in session for redirect after auth
-        req.session.returnTo = req.query.returnTo || '/';
+        req.session.returnTo = req.query.returnTo || '/welcome';
         req.session.authState = Math.random().toString(36).substring(7);
         
         // Force session save again with new data
@@ -206,7 +206,17 @@ router.get('/discord/callback', async (req, res) => {
                     'Pragma': 'no-cache',
                     'Expires': '0'
                 });
-                res.redirect('/welcome');
+                
+                // Redirect to the returnTo URL if it exists, otherwise to welcome page
+                const returnTo = req.session.returnTo || '/welcome';
+                logger.info('Redirecting user after authentication', { 
+                    returnTo,
+                    userId: userData.id,
+                    sessionId: req.session.id,
+                    hasSession: !!req.session,
+                    returnToSource: req.session.returnTo ? 'session' : 'default'
+                });
+                res.redirect(returnTo);
             });
         });
     } catch (error) {

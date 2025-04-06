@@ -36,7 +36,7 @@ router.get('/status', (req, res) => {
     });
 });
 
-// Newsletter subscription (placeholder)
+// Newsletter subscription
 router.post('/newsletter/subscribe', (req, res) => {
     const { email } = req.body;
     
@@ -47,13 +47,46 @@ router.post('/newsletter/subscribe', (req, res) => {
         });
     }
     
-    // In a real app, you would store this in a database
-    logger.info('Newsletter subscription', { email, ip: req.ip });
-    
-    res.json({
-        status: 'success',
-        message: 'Subscription successful! Thank you for subscribing.'
-    });
+    try {
+        // Assuming you have a database model for newsletter subscriptions
+        // This should be implemented according to your actual database setup
+        const db = require('../models');
+        
+        db.Newsletter.findOrCreate({
+            where: { email },
+            defaults: { 
+                email,
+                subscribedAt: new Date(),
+                ipAddress: req.ip
+            }
+        }).then(([subscription, created]) => {
+            if (created) {
+                logger.info('New newsletter subscription', { email, ip: req.ip });
+                res.json({
+                    status: 'success',
+                    message: 'Subscription successful! Thank you for subscribing.'
+                });
+            } else {
+                logger.info('Repeated newsletter subscription attempt', { email, ip: req.ip });
+                res.json({
+                    status: 'success',
+                    message: 'You are already subscribed to our newsletter.'
+                });
+            }
+        }).catch(err => {
+            logger.error('Newsletter subscription error', { email, error: err.message });
+            res.status(500).json({
+                status: 'error',
+                message: 'Unable to process your subscription. Please try again later.'
+            });
+        });
+    } catch (error) {
+        logger.error('Newsletter subscription exception', { email, error: error.message });
+        res.status(500).json({
+            status: 'error',
+            message: 'An unexpected error occurred. Please try again later.'
+        });
+    }
 });
 
 // Protected user profile route (requires login)
@@ -73,7 +106,7 @@ router.get('/profile', isAuthenticated, (req, res) => {
         avatarUrl: avatarUrl,
         email: user.email,
         locale: user.locale,
-        joinedAt: new Date().toISOString() // Placeholder
+        joinedAt: user.joinedAt || user.createdAt || user.registeredAt
     });
 });
 

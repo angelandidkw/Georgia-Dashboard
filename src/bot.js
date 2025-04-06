@@ -4,6 +4,7 @@ const { logger } = require('./utils/logger');
 
 class DiscordBot {
     constructor() {
+        // Initialize the client with necessary intents
         this.client = new Client({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -18,7 +19,7 @@ class DiscordBot {
     }
 
     initialize() {
-        // Error handling for uncaught exceptions
+        // Handle uncaught exceptions and unhandled rejections
         process.on('uncaughtException', (error) => {
             logger.error('Uncaught Exception:', error);
         });
@@ -27,7 +28,7 @@ class DiscordBot {
             logger.error('Unhandled Rejection:', error);
         });
 
-        // Bot event handlers
+        // Set up bot event handlers
         this.client.on('ready', () => this.handleReady());
         this.client.on('error', (error) => this.handleError(error));
         this.client.on('guildMemberUpdate', (oldMember, newMember) => this.handleMemberUpdate(oldMember, newMember));
@@ -39,7 +40,7 @@ class DiscordBot {
             logger.info(`Serving ${this.client.guilds.cache.size} guild(s)`);
             logger.info(`Bot is in ${this.client.guilds.cache.map(g => g.name).join(', ')}`);
             
-            // Set status
+            // Set the bot's activity status
             this.client.user.setActivity('Georgia State Roleplay', { type: 'PLAYING' });
         } catch (error) {
             logger.error('Error in handleReady:', error);
@@ -52,13 +53,13 @@ class DiscordBot {
 
     async handleMemberUpdate(oldMember, newMember) {
         try {
-            // Check for role changes
+            // Compare role changes between old and new member data
             const oldRoles = oldMember.roles.cache.map(role => role.id);
             const newRoles = newMember.roles.cache.map(role => role.id);
             
             if (JSON.stringify(oldRoles) !== JSON.stringify(newRoles)) {
                 logger.info(`Member ${newMember.user.tag} roles updated`);
-                // Here you can implement role-based access control updates
+                // Implement any additional role-based logic here
             }
         } catch (error) {
             logger.error('Error in handleMemberUpdate:', error);
@@ -128,13 +129,13 @@ class DiscordBot {
     }
 }
 
-// Create bot instance
+// Create a new instance of the bot
 const bot = new DiscordBot();
 
-// Check if run directly (node bot.js)
+// If the file is run directly, start the bot
 if (require.main === module) {
     logger.info('Starting bot in standalone mode...');
     bot.start();
 }
 
-module.exports = bot; 
+module.exports = bot;
